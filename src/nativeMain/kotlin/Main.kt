@@ -2,20 +2,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Serializable
-private data class Message(
-    val topic: String,
-    val content: String,
-)
+import kotlinx.cinterop.*
+import liboutline_windows.*
 
-private val PrettyPrintJson = Json {
-    prettyPrint = true
-}
-
+@OptIn(ExperimentalForeignApi::class)
 fun main() {
-    val message = Message(
-        topic = "Kotlin/Native",
-        content = "Hello!"
-    )
-    println(PrettyPrintJson.encodeToString(message))
+    println("Hello, enter your name:")
+    StartOutline("ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpTUU53NFdYc3BZZnRtaEt5dU9ZcEFN@195.201.111.36:40287/?outline=1".cstr)
+    val name = readln()
+    StopOutline()
 }

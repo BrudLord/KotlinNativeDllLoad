@@ -1,0 +1,2 @@
+headers = liboutline_windows.h
+compilerOpts = -Isrc/nativeMain/resources

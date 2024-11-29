@@ -27,6 +27,12 @@ kotlin {
         binaries {
             executable {
                 entryPoint = "main"
+                runTask?.standardInput = System.`in`
+            }
+        }
+        compilations["main"].cinterops {
+            val liboutline by creating {
+                definitionFile = file("src/nativeMain/resources/liboutline_windows.def")
             }
         }
     }
