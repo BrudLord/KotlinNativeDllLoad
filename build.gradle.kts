@@ -32,7 +32,7 @@ kotlin {
         }
         compilations["main"].cinterops {
             val liboutline by creating {
-                definitionFile = file("src/nativeMain/resources/liboutline_windows.def")
+                definitionFile = file("src/nativeInterop/cinterop/liboutline_windows.def")
             }
         }
     }
