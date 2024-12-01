@@ -30,11 +30,6 @@ kotlin {
                 runTask?.standardInput = System.`in`
             }
         }
-        compilations["main"].cinterops {
-            val liboutline by creating {
-                definitionFile = file("src/nativeInterop/cinterop/liboutline_windows.def")
-            }
-        }
     }
 
     sourceSets {

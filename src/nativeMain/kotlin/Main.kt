@@ -1,31 +1,30 @@
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-
 import kotlinx.cinterop.*
-import liboutline_windows.*
-import platform.windows.*
+import platform.posix.*
 
 @OptIn(ExperimentalForeignApi::class)
 fun main() {
-    val library = LoadLibraryA("C:/Users/brudlord/IdeaProjects/KotlinNativeDllLoad/src/nativeInterop/cinterop/liboutline_windows.dll")
+    val libraryPath = "/home/brudlord/NIR/KotlinNativeDllLoad/src/nativeInterop/cinterop/linux/liboutline_linux.so"
+    val library = dlopen(libraryPath, RTLD_LAZY)
     if (library == null) {
-        error("Failed to load library: ${GetLastError()}")
+        perror("Failed to load library")
+        return
     }
     println("Hello, enter your name:")
-    val startOutlineFunc = GetProcAddress(library, "StartOutline")
+
+    val startOutlineFunc = dlsym(library, "StartOutline")
     val startOutline = startOutlineFunc?.reinterpret<CFunction<(CValuesRef<ByteVar>?) -> Unit>>()
-    try {
-        if (startOutline != null) {
+
+    if (startOutline != null) {
+        try {
             startOutline("ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpTUU53NFdYc3BZZnRtaEt5dU9ZcEFN@195.201.111.36:40287/?outline=1".cstr)
-        } else {
-            println("Failed to load library")
+            println("StartOutline called successfully.")
+        } catch (e: Exception) {
+            println("An error occurred while calling StartOutline: ${e.message}")
+            e.printStackTrace()
         }
-        println("StartOutline called successfully.")
-    } catch (e: Exception) {
-        println("An error occurred while calling StartOutline: ${e.message}")
-        e.printStackTrace()
+    } else {
+        println("Failed to load StartOutline function")
     }
     val name = readln()
-//    StopOutline()
+    dlclose(library)
 }
